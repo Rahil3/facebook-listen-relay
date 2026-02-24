@@ -29,10 +29,21 @@ Deno.serve(async (req: Request) => {
     return new Response("Forbidden", { status: 403, headers: corsHeaders });
   }
 
-  // POST - Facebook webhook event
+  // POST - Facebook webhook event → forward to Boltic
   if (req.method === "POST") {
-    const body = await req.json();
-    console.log("Event received:", JSON.stringify(body));
+    const body = await req.text();
+    console.log("Event received, forwarding to Boltic");
+
+    try {
+      const bolticRes = await fetch(
+        "https://asia-south1.api.boltic.io/service/webhook/temporal/v1.0/3aed43ee-2b86-4a72-bbe3-5dc8db588d82/workflows/execute/d67bc659-4e70-42c1-bd9c-3de69ce40e8e",
+        { method: "POST", headers: { "Content-Type": "application/json" }, body }
+      );
+      const bolticText = await bolticRes.text();
+      console.log("Boltic response:", bolticRes.status, bolticText);
+    } catch (err) {
+      console.error("Error forwarding to Boltic:", err);
+    }
 
     return new Response(JSON.stringify({ status: "EVENT_RECEIVED" }), {
       status: 200,
