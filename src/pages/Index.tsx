@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, Copy, ExternalLink, Webhook, Zap, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const WEBHOOK_URL = "https://asia-south1.workflow.boltic.app/0232ed3f-9847-4645-a3d4-90c3b0df599c";
+const WEBHOOK_URL = "https://axdtpcroupgdhtcnkweo.supabase.co/functions/v1/facebook-webhook";
 
 const Index = () => {
   const { toast } = useToast();
